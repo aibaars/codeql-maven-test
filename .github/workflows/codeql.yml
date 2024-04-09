@@ -1,0 +1,61 @@
+name: CodeQL
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup maven repository
+        run: |
+          sudo apt install -y nginx
+          htpasswd -cb "$RUNNER_TEMP/.htpasswd" maven maven
+          echo 'error_log  "'$RUNNER_TEMP'/error.log";
+                pid        "'$RUNNER_TEMP'/nginx.pid";
+                events {
+                  worker_connections  4096;  ## Default: 1024
+                  }
+                  http {
+                    error_log  "'$RUNNER_TEMP'/error.log";
+                    access_log  "'$RUNNER_TEMP'/access.log";
+                    server {
+                      listen 8080;
+                      location /maven/ {
+                        auth_basic "Maven";
+                        auth_basic_user_file "'$RUNNER_TEMP'/.htpasswd";
+                        proxy_pass https://repo1.maven.org/maven2/;
+                      }
+                    }
+                  }' > "$RUNNER_TEMP/nginx.conf"
+          nginx -c "$RUNNER_TEMP/nginx.conf"
+      - name: Build docker image
+        run: |
+          docker network create --internal no-internet
+          docker build -t image --build-arg "github_token=${{ github.token }}" .
+
+      - uses: actions/checkout@v4
+        with:
+          path: repo
+          repository: apache/commons-io
+
+      - name: Run analysis
+        run: |
+          mkdir out
+          docker run --network no-internet -v ./repo:/repo -v ./out:/out --add-host=maven.example.com:172.17.0.1 image bash -c "gh codeql database create -l java --build-mode none -s /repo /out/database"
+          sudo chmod -R +rX out
+
+      - name: Upload database
+        uses: actions/upload-artifact@v4
+        with:
+          path: out
+          name: database

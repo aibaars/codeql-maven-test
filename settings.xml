@@ -1,0 +1,22 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+     <mirrors>
+        <mirror>
+            <id>maven-default-http-blocker</id>
+                <mirrorOf>dummy</mirrorOf>
+                <url>http://0.0.0.0/</url>
+            </mirror>
+         <mirror>
+             <id>maven-internal</id>
+             <url>http://maven.example.com:8080/maven/</url>
+             <mirrorOf>central</mirrorOf>
+         </mirror>
+    </mirrors>
+    <servers>
+     <server>
+     <id>maven-internal</id>
+     <username>maven</username>
+     <password>maven</password>
+    </server>
+   </servers>
+</settings>
