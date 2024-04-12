@@ -8,6 +8,11 @@ on:
     branches: [ "main" ]
 
   workflow_dispatch:
+    inputs:
+      repository:
+        description: 'GitHub repository'
+        required: false
+        default: apache/commons-io
 
 jobs:
   build:
@@ -46,7 +51,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: repo
-          repository: apache/commons-io
+          repository: ${{ inputs.repository || 'apache/commons-io' }}
 
       - name: Run analysis
         run: |
