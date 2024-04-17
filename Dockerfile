@@ -18,3 +18,7 @@ RUN apt install -y openjdk-8-jdk openjdk-11-jdk openjdk-19-jdk default-jdk
 RUN apt install -y gradle maven ant
 
 COPY settings.xml /root/.m2/settings.xml
+
+COPY gradle.org.crt /usr/local/share/ca-certificates/gradle.org.crt
+
+RUN update-ca-certificates

@@ -5,14 +5,63 @@ events {
   worker_connections  4096;  ## Default: 1024
 }
 http {
+log_format main '$http_x_forwarded_for - $remote_user [$time_local] "$host" "$request" '
+            '$status $body_bytes_sent "$http_referer" '
+            '"$http_user_agent" $request_time';
+
+
   error_log  "${RUNNER_TEMP}/error.log";
-  access_log  "${RUNNER_TEMP}/access.log";
+  access_log  "${RUNNER_TEMP}/access.log" main;
   server {
     listen 8080;
     location /maven/ {
       auth_basic "Maven";
       auth_basic_user_file "${RUNNER_TEMP}/.htpasswd";
+      proxy_set_header Authorization "";
       proxy_pass https://repo1.maven.org/maven2/;
     }
+    location /google/ {
+      auth_basic "Maven";
+      auth_basic_user_file "${RUNNER_TEMP}/.htpasswd";
+      proxy_set_header Authorization "";
+      proxy_pass https://dl.google.com/android/maven2/;
+    }
+    location /plugins/ {
+      auth_basic "Maven";
+      auth_basic_user_file "${RUNNER_TEMP}/.htpasswd";
+      proxy_set_header Authorization "";
+      proxy_pass https://plugins.gradle.org/m2/;
+      proxy_intercept_errors on;
+      recursive_error_pages on;
+      error_page 301 302 303 307 = @handle_redirect;
+    }
+    location @handle_redirect {
+        proxy_intercept_errors on;
+        proxy_set_header Authorization "";
+        error_page 301 302 303 307 = @handle_redirect;
+        set $saved_redirect_location '$upstream_http_location';
+        resolver 8.8.8.8 ipv6=off;
+        proxy_pass $saved_redirect_location;
+    }
   }
+  server {
+    listen              443 ssl;
+    server_name         services.gradle.org;
+    ssl_certificate     gradle.org.crt;
+    ssl_certificate_key gradle.org.key;
+    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+    location / {
+        proxy_pass https://services.gradle.org/;
+        proxy_intercept_errors on;
+        recursive_error_pages on;
+        error_page 301 302 303 307 = @handle_redirect;
+    }
+    location @handle_redirect {
+        proxy_intercept_errors on;
+        error_page 301 302 303 307 = @handle_redirect;
+        set $saved_redirect_location '$upstream_http_location';
+        resolver 8.8.8.8 ipv6=off;
+        proxy_pass $saved_redirect_location;
+    }  }
 }

@@ -25,8 +25,12 @@ jobs:
         run: |
           sudo apt install -y nginx
           htpasswd -cb "$RUNNER_TEMP/.htpasswd" maven maven
-          envsubst < nginx.conf.templ > "$RUNNER_TEMP/nginx.conf"
-          nginx -c "$RUNNER_TEMP/nginx.conf"
+          openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout gradle.org.key -out gradle.org.crt -batch -subj '/CN=services.gradle.org' \
+            -addext 'subjectAltName = DNS:services.gradle.org' \
+            -addext 'certificatePolicies = 1.2.3.4'
+          cp gradle.org.key gradle.org.crt "$RUNNER_TEMP/"
+          envsubst '$RUNNER_TEMP' < nginx.conf.templ > "$RUNNER_TEMP/nginx.conf"
+          sudo nginx -c "$RUNNER_TEMP/nginx.conf"
       - name: Build docker image
         run: |
           docker network create --internal no-internet
@@ -40,7 +44,10 @@ jobs:
       - name: Run analysis
         run: |
           mkdir out
-          docker run --network no-internet -v ./repo:/repo -v ./out:/out --add-host=maven.example.com:172.17.0.1 image bash -c "gh codeql database create -l java --build-mode none -s /repo /out/database"
+          docker run --network no-internet -v ./repo:/repo -v ./out:/out  \
+          --add-host=maven.example.com:172.17.0.1 \
+          --add-host=services.gradle.org:172.17.0.1 \
+          image bash -c "gh codeql database create -l java --build-mode none -s /repo /out/database"
           sudo chmod -R +rX out
 
       - name: Upload database
