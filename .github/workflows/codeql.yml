@@ -25,23 +25,7 @@ jobs:
         run: |
           sudo apt install -y nginx
           htpasswd -cb "$RUNNER_TEMP/.htpasswd" maven maven
-          echo 'error_log  "'$RUNNER_TEMP'/error.log";
-                pid        "'$RUNNER_TEMP'/nginx.pid";
-                events {
-                  worker_connections  4096;  ## Default: 1024
-                  }
-                  http {
-                    error_log  "'$RUNNER_TEMP'/error.log";
-                    access_log  "'$RUNNER_TEMP'/access.log";
-                    server {
-                      listen 8080;
-                      location /maven/ {
-                        auth_basic "Maven";
-                        auth_basic_user_file "'$RUNNER_TEMP'/.htpasswd";
-                        proxy_pass https://repo1.maven.org/maven2/;
-                      }
-                    }
-                  }' > "$RUNNER_TEMP/nginx.conf"
+          envsubst < nginx.conf.templ > "$RUNNER_TEMP/nginx.conf"
           nginx -c "$RUNNER_TEMP/nginx.conf"
       - name: Build docker image
         run: |
