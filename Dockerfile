@@ -22,3 +22,7 @@ COPY settings.xml /root/.m2/settings.xml
 COPY gradle.org.crt /usr/local/share/ca-certificates/gradle.org.crt
 
 RUN update-ca-certificates
+
+COPY init.gradle /root/.gradle/init.d/init.gradle
+
+RUN for path in /root/.local/share/gh/extensions/gh-codeql/dist/release/*/java/tools/dep-graph.gradle; do sed -i -e 's#url = uri("https://plugins.gradle.org/m2/")# credentials { username "maven"; password "maven"}; allowInsecureProtocol = true; url "http://maven.example.com:8080/plugins/"#' "$path"; done
