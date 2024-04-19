@@ -55,3 +55,9 @@ jobs:
         with:
           path: out
           name: database
+
+      - name: Print nginx logs
+        run: |
+          cat "${RUNNER_TEMP}/access.log"
+          cat "${RUNNER_TEMP}/error.log"
+          cat /var/log/nginx/error.log
