@@ -7,264 +7,33 @@ beforeSettings { settings ->
                         password 'maven'
                     }
                     allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/maven/'
-            }
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/google/'
-            }
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
                     url 'http://maven.example.com:8080/plugins/'
             }
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/gradle-repo/public/'
-            }
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/gradle-repo/enterprise-libs-release-candidates/'
-            }
         }
-            settings.dependencyResolutionManagement {
-                repositories {
-                maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/maven/'
-                }
-                maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/google/'
-                }
-                maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/plugins/'
-                }
-                maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/gradle-repo/public/'
-                }
-                maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/gradle-repo/enterprise-libs-release-candidates/'
-                }
-            }
-        }
+    }
+    settings.dependencyResolutionManagement {
     }
 }
 
 allprojects {
-beforeSettings { settings ->
-    settings.pluginManagement {
-        repositories {
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/maven/'
-            }
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/google/'
-            }
-            maven {
+    beforeSettings { settings ->
+        settings.pluginManagement {
+            repositories {
+                maven {
                     credentials {
                         username 'maven'
                         password 'maven'
                     }
                     allowInsecureProtocol = true
                     url 'http://maven.example.com:8080/plugins/'
-            }
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/gradle-repo/public/'
-            }
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/gradle-repo/enterprise-libs-release-candidates/'
+                }
             }
         }
-            settings.dependencyResolutionManagement {
-                repositories {
-                maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/maven/'
-                }
-                maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/google/'
-                }
-                maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/plugins/'
-                }
-                maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/gradle-repo/public/'
-                }
-                maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/gradle-repo/enterprise-libs-release-candidates/'
-                }
-            }
+        settings.dependencyResolutionManagement {
         }
     }
-}    
+}
+buildscript {
     repositories {
-        maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/maven/'
-        }
-        maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/google/'
-        }
-        maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/plugins/'
-        }
-        maven {
-                credentials {
-                    username 'maven'
-                    password 'maven'
-                }
-                allowInsecureProtocol = true
-                url 'http://maven.example.com:8080/gradle-repo/public/'
-        }
-        maven {
-                credentials {
-                    username 'maven'
-                    password 'maven'
-                }
-                allowInsecureProtocol = true
-                url 'http://maven.example.com:8080/gradle-repo/enterprise-libs-release-candidates/'
-        }
-    }
-
-    buildscript {
-                repositories {
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/maven/'
-            }
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/google/'
-            }
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/plugins/'
-            }
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/gradle-repo/public/'
-            }
-            maven {
-                    credentials {
-                        username 'maven'
-                        password 'maven'
-                    }
-                    allowInsecureProtocol = true
-                    url 'http://maven.example.com:8080/gradle-repo/enterprise-libs-release-candidates/'
-            }
-        }
     }
 }

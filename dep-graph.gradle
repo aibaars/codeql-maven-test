@@ -1,0 +1,14 @@
+import net.linguica.gradle.maven.settings.MavenSettingsPlugin
+import org.gradle.github.GitHubDependencyGraphPlugin
+
+initscript {
+    dependencies {
+        classpath fileTree("${System.getenv('CODEQL_DIST')}/java/tools/github-dependency-graph-gradle-plugin-1.2.2.jar")
+        classpath fileTree("${System.getenv('CODEQL_DIST')}/java/tools/maven-settings-plugin-0.8.jar")
+    }
+}
+
+allprojects {
+  apply plugin: MavenSettingsPlugin
+}
+apply plugin: GitHubDependencyGraphPlugin

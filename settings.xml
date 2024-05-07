@@ -9,7 +9,7 @@
          <mirror>
              <id>maven-internal</id>
              <url>http://maven.example.com:8080/maven/</url>
-             <mirrorOf>central</mirrorOf>
+             <mirrorOf>*</mirrorOf>
          </mirror>
     </mirrors>
     <servers>

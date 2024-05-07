@@ -26,7 +26,7 @@ jobs:
           sudo apt install -y nginx
           htpasswd -cb "$RUNNER_TEMP/.htpasswd" maven maven
           openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout gradle.org.key -out gradle.org.crt -batch -subj '/CN=services.gradle.org' \
-            -addext 'subjectAltName = DNS:services.gradle.org' \
+            -addext 'subjectAltName = DNS:services.gradle.org, DNS:api.foojay.io, DNS:cdn.azul.com' \
             -addext 'certificatePolicies = 1.2.3.4'
           cp gradle.org.key gradle.org.crt "$RUNNER_TEMP/"
           envsubst '$RUNNER_TEMP' < nginx.conf.templ > "$RUNNER_TEMP/nginx.conf"

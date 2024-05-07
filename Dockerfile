@@ -25,4 +25,12 @@ RUN update-ca-certificates
 
 COPY init.gradle /root/.gradle/init.d/init.gradle
 
-RUN for path in /root/.local/share/gh/extensions/gh-codeql/dist/release/*/java/tools/dep-graph.gradle; do sed -i -e 's#url = uri("https://plugins.gradle.org/m2/")# credentials { username "maven"; password "maven"}; allowInsecureProtocol = true; url "http://maven.example.com:8080/plugins/"#' "$path"; done
+COPY dep-graph.gradle /root/dep-graph.gradle
+COPY github-dependency-graph-gradle-plugin-1.2.2.jar /root/github-dependency-graph-gradle-plugin-1.2.2.jar
+COPY maven-settings-plugin-0.8.jar /root/maven-settings-plugin-0.8.jar
+
+RUN for path in /root/.local/share/gh/extensions/gh-codeql/dist/release/*/java/tools; do \
+      cp /root/dep-graph.gradle "$path"; \
+      cp /root/github-dependency-graph-gradle-plugin-1.2.2.jar "$path"; \
+      cp /root/maven-settings-plugin-0.8.jar  "$path"; \
+    done

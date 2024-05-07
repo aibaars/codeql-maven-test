@@ -70,5 +70,6 @@ log_format main '$http_x_forwarded_for - $remote_user [$time_local] "$host" "$re
         set $saved_redirect_location '$upstream_http_location';
         resolver 8.8.8.8 ipv6=off;
         proxy_pass $saved_redirect_location;
-    }  }
+    }
+  }
 }
